@@ -1,0 +1,9 @@
+server.port: 9091
+
+spring.data.mongodb.database: bars
+---
+spring.profiles: docker
+spring.data.mongodb:
+ host: mongo
+ username: user
+ password: password

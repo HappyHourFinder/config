@@ -1,0 +1,18 @@
+server.port: 9090
+
+spring.cloud.gateway.routes:
+  - id: bar-service
+    uri: http://${bar-service.url}:${bar-service.port}/
+    predicates:
+      - Path=/bars/**
+
+bar-service:
+  url: localhost
+  port: 9091
+
+---
+spring.profiles: docker
+
+bar-service:
+  url: bar-service
+  port: 9091

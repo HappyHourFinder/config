@@ -1,14 +1,25 @@
 server.port: 9090
 
-spring.cloud.gateway.routes:
+spring:
+  cloud.gateway.routes:
   - id: bar-service
     uri: http://${bar-service.url}:${bar-service.port}/
     predicates:
       - Path=/bars/**
+  boot.admin.client:
+    url: http://${app.admin-server}:8080
+    username: admin
+    password: admin
 
 bar-service:
   url: localhost
   port: 9091
+
+management:
+  endpoint.health.show-details: "ALWAYS"
+  endpoints.web.exposure.include: "*"
+
+app.admin-server: localhost
 
 ---
 spring.profiles: docker
@@ -16,3 +27,5 @@ spring.profiles: docker
 bar-service:
   url: bar-service
   port: 9091
+
+app.admin-server: admin-server

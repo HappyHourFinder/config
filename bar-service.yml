@@ -1,9 +1,23 @@
 server.port: 9091
 
-spring.data.mongodb.database: bars
+spring:
+  data.mongodb.database: bars
+  boot.admin.client:
+    url: http://${app.admin-server}:8080
+    username: admin
+    password: admin
+
+management:
+  endpoint.health.show-details: "ALWAYS"
+  endpoints.web.exposure.include: "*"
+
+app.admin-server: localhost
+
 ---
 spring.profiles: docker
 spring.data.mongodb:
- host: mongo
- username: user
- password: password
+  host: mongo
+  username: user
+  password: password
+
+app.admin-server: admin-server

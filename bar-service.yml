@@ -3,15 +3,22 @@ server.port: 9091
 spring:
   data.mongodb.database: bars
   boot.admin.client:
-    url: http://${app.admin-server}:8080
+    url: http://${app.admin-server.host}:${app.admin-server.port}
     username: admin
     password: admin
-
+  zipkin.base-url: http://${app.zipkin.host}:${app.zipkin.port}/
+  sleuth.sampler.probability: 1
 management:
   endpoint.health.show-details: "ALWAYS"
   endpoints.web.exposure.include: "*"
 
-app.admin-server: localhost
+app:
+  admin-server:
+    host: localhost
+    port: 8080
+  zipkin: 
+    host: localhost
+    port: 9411
 
 ---
 spring.profiles: docker
@@ -20,4 +27,6 @@ spring.data.mongodb:
   username: user
   password: password
 
-app.admin-server: admin-server
+app:
+  admin-server.host: admin-server
+  zipkin.host: zipkin

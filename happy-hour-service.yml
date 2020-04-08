@@ -1,7 +1,6 @@
-server.port: 9091
+server.port: 9092
 
 spring:
-  data.mongodb.database: bars
   boot.admin.client:
     url: http://${app.admin-server.host}:${app.admin-server.port}
     username: admin
@@ -23,11 +22,6 @@ app:
 ---
 spring.profiles: docker
 server.port: 8080
-
-spring.data.mongodb:
-  host: mongo
-  username: user
-  password: password
 
 app:
   admin-server.host: admin-server

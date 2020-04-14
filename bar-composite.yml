@@ -7,6 +7,7 @@ spring:
     password: admin
   zipkin.base-url: http://${app.zipkin.host}:${app.zipkin.port}/
   sleuth.sampler.probability: 1
+eureka.client.serviceUrl.defaultZone: http://${app.eureka.host}:${app.eureka.port}/eureka
 management:
   endpoint.health.show-details: "ALWAYS"
   endpoints.web.exposure.include: "*"
@@ -15,6 +16,9 @@ app:
   admin-server:
     host: localhost
     port: 8080
+  eureka:
+    host: localhost
+    port: 8761
   zipkin: 
     host: localhost
     port: 9411
@@ -25,4 +29,5 @@ server.port: 8080
 
 app:
   admin-server.host: admin-server
+  eureka.host: discovery
   zipkin.host: zipkin

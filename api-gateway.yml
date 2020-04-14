@@ -9,10 +9,12 @@ spring:
   sleuth.sampler.probability: 1
 
   cloud.gateway.routes:
-  - id: bar-service
-    uri: http://${app.bar-service.host}:${app.bar-service.port}/
+  - id: bar-composite
+    uri: http://${app.bar-composite.host}:${app.bar-composite.port}/
     predicates:
       - Path=/bars/**
+    filters:
+    - RewritePath=/bars, /
   - id: happy-hour-service
     uri: http://${app.happy-hour-service.host}:${app.happy-hour-service.port}/
     predicates:
@@ -31,8 +33,8 @@ app:
     host: localhost
     port: 8080
   zipkin: 
-    host: localhost
     port: 9411
+    host: localhost
   bar-service:
     host: localhost
     port: 9091

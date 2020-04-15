@@ -1,17 +1,28 @@
 server.port: 9090
 
 spring:
-  cloud.gateway.routes:
-  - id: bar-service
-    uri: http://${app.bar-service.host}:${app.bar-service.port}/
-    predicates:
-      - Path=/bars/**
   boot.admin.client:
     url: http://${app.admin-server.host}:${app.admin-server.port}
     username: admin
     password: admin
   zipkin.base-url: http://${app.zipkin.host}:${app.zipkin.port}/
   sleuth.sampler.probability: 1
+
+  cloud.gateway.routes:
+  - id: bar-composite
+    uri: http://${app.bar-composite.host}:${app.bar-composite.port}/
+    predicates:
+      - Path=/bars/**
+    filters:
+    - RewritePath=/bars, /
+  - id: happy-hour-service
+    uri: http://${app.happy-hour-service.host}:${app.happy-hour-service.port}/
+    predicates:
+      - Path=/happyhours/**
+  - id: trip-service
+    uri: http://${app.trip-service.host}:${app.trip-service.port}/
+    predicates:
+      - Path=/trips/**
 
 management:
   endpoint.health.show-details: "ALWAYS"
@@ -22,16 +33,38 @@ app:
     host: localhost
     port: 8080
   zipkin: 
-    host: localhost
     port: 9411
+    host: localhost
   bar-service:
     host: localhost
     port: 9091
+  happy-hour-service:
+    host: localhost
+    port: 9092
+  bar-composite:
+    host: localhost
+    port: 9093
+  trip-service:
+    host: localhost
+    port: 9094
 
 ---
 spring.profiles: docker
 
 app:
-  admin-server.host: admin-server
-  bar-service.host: bar-service
+  admin-server:
+    host: admin-server
+    port: 8080
+  bar-service:
+    host: bar-service
+    port: 8080
+  happy-hour-service:
+    host: happy-hour-service
+    port: 8080
+  bar-composite:
+    host: bar-composite
+    port: 8080
+  trip-service:
+    host: trip-service
+    port: 8080            
   zipkin.host: zipkin

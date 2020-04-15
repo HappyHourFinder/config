@@ -1,14 +1,6 @@
-server.port: 9091
+server.port: 9093
 
 spring:
-  datasource:
-    hikari:
-      connectionTimeout: 20000
-      maximumPoolSize: 5
-    url: jdbc:postgresql://localhost:5432/bar
-    username: user
-    password: password
-  jpa.hibernate.ddl-auto: create
   boot.admin.client:
     url: http://${app.admin-server.host}:${app.admin-server.port}
     username: admin
@@ -34,8 +26,6 @@ app:
 ---
 spring.profiles: docker
 server.port: 8080
-
-spring.datasource.url: jdbc:postgresql://bar-db:5432/bar
 
 app:
   admin-server.host: admin-server

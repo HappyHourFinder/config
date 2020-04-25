@@ -13,8 +13,6 @@ spring:
     uri: http://${app.bar-composite.host}:${app.bar-composite.port}/
     predicates:
       - Path=/bars/**
-    filters:
-    - RewritePath=/bars, /
   - id: happy-hour-service
     uri: http://${app.happy-hour-service.host}:${app.happy-hour-service.port}/
     predicates:

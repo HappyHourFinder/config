@@ -10,18 +10,15 @@ spring:
 
   cloud.gateway.routes:
   - id: bar-composite
-    uri: http://${app.bar-composite.host}:${app.bar-composite.port}/
+    uri: lb://bar-composite
     predicates:
       - Path=/bars/**
-  - id: happy-hour-service
-    uri: http://${app.happy-hour-service.host}:${app.happy-hour-service.port}/
-    predicates:
-      - Path=/happyhours/**
   - id: trip-service
-    uri: http://${app.trip-service.host}:${app.trip-service.port}/
+    uri: lb://trip-service
     predicates:
       - Path=/trips/**
 
+eureka.client.serviceUrl.defaultZone: http://${app.eureka.host}:${app.eureka.port}/eureka
 management:
   endpoint.health.show-details: "ALWAYS"
   endpoints.web.exposure.include: "*"
@@ -30,39 +27,17 @@ app:
   admin-server:
     host: localhost
     port: 8080
+  eureka:
+    host: localhost
+    port: 8761
   zipkin: 
     port: 9411
     host: localhost
-  bar-service:
-    host: localhost
-    port: 9091
-  happy-hour-service:
-    host: localhost
-    port: 9092
-  bar-composite:
-    host: localhost
-    port: 9093
-  trip-service:
-    host: localhost
-    port: 9094
 
 ---
 spring.profiles: docker
 
 app:
-  admin-server:
-    host: admin-server
-    port: 8080
-  bar-service:
-    host: bar-service
-    port: 8080
-  happy-hour-service:
-    host: happy-hour-service
-    port: 8080
-  bar-composite:
-    host: bar-composite
-    port: 8080
-  trip-service:
-    host: trip-service
-    port: 8080            
+  admin-server.host: admin-server
+  eureka.host: discovery
   zipkin.host: zipkin

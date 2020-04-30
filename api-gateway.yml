@@ -8,15 +8,40 @@ spring:
   zipkin.base-url: http://${app.zipkin.host}:${app.zipkin.port}/
   sleuth.sampler.probability: 1
 
-  cloud.gateway.routes:
-  - id: bar-composite
-    uri: lb://bar-composite
-    predicates:
-      - Path=/bars/**
-  - id: trip-service
-    uri: lb://trip-service
-    predicates:
-      - Path=/trips/**
+  cloud.gateway:
+    discovery.locator.enabled: true
+    routes:
+      - id: admin
+        uri: http://${app.admin-server.host}:${app.admin-server.host}
+        predicates:
+          - Path=/admin/**
+        filters:
+          - RewritePath=/admin/(?<path>.*), /$\{path}
+      - id: zipkin
+        uri: http://${app.zipkin.host}:${app.zipkin.host}
+        predicates:
+          - Path=/zipkin/**
+        filters:
+          - RewritePath=/zipkin/(?<path>.*), /$\{path}
+      - id: openapi
+        uri: http://localhost:${server.port}
+        predicates:
+          - Path=/v3/api-docs/**
+        filters:
+          - RewritePath=/v3/api-docs/(?<path>.*), /$\{path}/v3/api-docs
+
+      - id: bar-service
+        uri: lb://bar-composite
+        predicates:
+          - Path=/bars/**
+      - id: happy-hour-service
+        uri: lb://happy-hour-service
+        predicates:
+          - Path=/happyhours/**
+      - id: trip-service
+        uri: lb://trip-service
+        predicates:
+          - Path=/trips/**
 
 eureka.client.serviceUrl.defaultZone: http://${app.eureka.host}:${app.eureka.port}/eureka
 management:
@@ -30,9 +55,9 @@ app:
   eureka:
     host: localhost
     port: 8761
-  zipkin: 
-    port: 9411
+  zipkin:
     host: localhost
+    port: 9411
 
 ---
 spring.profiles: docker

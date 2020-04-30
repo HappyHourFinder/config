@@ -1,20 +1,34 @@
 server.port: 9092
 
 spring:
+  datasource:
+    hikari:
+      connectionTimeout: 20000
+      maximumPoolSize: 5
+  jpa.hibernate.ddl-auto: create
   boot.admin.client:
     url: http://${app.admin-server.host}:${app.admin-server.port}
     username: admin
     password: admin
   zipkin.base-url: http://${app.zipkin.host}:${app.zipkin.port}/
   sleuth.sampler.probability: 1
+
+eureka.client.serviceUrl.defaultZone: http://${app.eureka.host}:${app.eureka.port}/eureka
 management:
   endpoint.health.show-details: "ALWAYS"
   endpoints.web.exposure.include: "*"
+
+springdoc:
+  packagesToScan: com.mathieuaime.hhf.core.happyhour
+  api-docs.path: /happyhours/v3/api-docs
 
 app:
   admin-server:
     host: localhost
     port: 8080
+  eureka:
+    host: localhost
+    port: 8761
   zipkin: 
     host: localhost
     port: 9411
@@ -25,4 +39,5 @@ server.port: 8080
 
 app:
   admin-server.host: admin-server
+  eureka.host: discovery
   zipkin.host: zipkin

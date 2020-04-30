@@ -11,25 +11,12 @@ spring:
   cloud.gateway:
     discovery.locator.enabled: true
     routes:
-      - id: admin
-        uri: http://${app.admin-server.host}:${app.admin-server.host}
-        predicates:
-          - Path=/admin/**
-        filters:
-          - RewritePath=/admin/(?<path>.*), /$\{path}
-      - id: zipkin
-        uri: http://${app.zipkin.host}:${app.zipkin.host}
-        predicates:
-          - Path=/zipkin/**
-        filters:
-          - RewritePath=/zipkin/(?<path>.*), /$\{path}
       - id: openapi
         uri: http://localhost:${server.port}
         predicates:
           - Path=/v3/api-docs/**
         filters:
           - RewritePath=/v3/api-docs/(?<path>.*), /$\{path}/v3/api-docs
-
       - id: bar-service
         uri: lb://bar-composite
         predicates:

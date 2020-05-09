@@ -12,6 +12,7 @@ spring:
     password: admin
   zipkin.base-url: http://${app.zipkin.host}:${app.zipkin.port}/
   sleuth.sampler.probability: 1
+  security.oauth2.resourceserver.jwt.issuer-uri: http://${app.keycloak.host}:${app.keycloak.port}/auth/realms/hhf
 
 eureka.client.serviceUrl.defaultZone: http://${app.eureka.host}:${app.eureka.port}/eureka
 management:
@@ -29,7 +30,10 @@ app:
   eureka:
     host: localhost
     port: 8761
-  zipkin: 
+  keycloak:
+    host: localhost
+    port: 8090
+  zipkin:
     host: localhost
     port: 9411
 
@@ -40,4 +44,7 @@ server.port: 8080
 app:
   admin-server.host: admin-server
   eureka.host: discovery
+  keycloak:
+    host: keycloak
+    port: 8080
   zipkin.host: zipkin

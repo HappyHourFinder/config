@@ -10,6 +10,8 @@ spring:
 
   cloud.gateway:
     discovery.locator.enabled: true
+    default-filters:
+      - TokenRelay
     routes:
       - id: openapi
         uri: http://localhost:${server.port}
@@ -30,6 +32,14 @@ spring:
         predicates:
           - Path=/trips/**
 
+  security.oauth2.client:
+    provider.keycloak:
+      issuer-uri: http://${app.keycloak.host}:${app.keycloak.port}/auth/realms/hhf
+      user-name-attribute: preferred_username
+    registration.keycloak:
+      client-id: ${app.keycloak.client.id}
+      client-secret: ${app.keycloak.client.secret}
+
 eureka.client.serviceUrl.defaultZone: http://${app.eureka.host}:${app.eureka.port}/eureka
 management:
   endpoint.health.show-details: "ALWAYS"
@@ -42,6 +52,9 @@ app:
   eureka:
     host: localhost
     port: 8761
+  keycloak:
+    host: localhost
+    port: 8090
   zipkin:
     host: localhost
     port: 9411
@@ -52,4 +65,7 @@ spring.profiles: docker
 app:
   admin-server.host: admin-server
   eureka.host: discovery
+  keycloak:
+    host: keycloak
+    port: 8080
   zipkin.host: zipkin
